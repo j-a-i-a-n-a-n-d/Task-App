@@ -1,0 +1,1 @@
+running mongo on my local D:\_mongo\MONGODB\bin\mongod.exe --dbpath=D:\_mongo\MONGO-DATA
