@@ -2,4 +2,4 @@
 
 ### Django REST CRUD (old)
 ### cli based crud (js)
-### task-app crud with auth(ts)
+### task-app crud with auth(js)
