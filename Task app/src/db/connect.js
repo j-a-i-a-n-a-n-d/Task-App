@@ -8,6 +8,9 @@ const connect = () => {
         useNewUrlParser: true,    
         useUnifiedTopology: true,
     })
+
+    //
+    //
     mongoose.connection.on("connected", () => {
         console.log("Connected with database on ", uri);
     })
