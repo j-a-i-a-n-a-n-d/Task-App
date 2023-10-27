@@ -10,27 +10,26 @@ const addingTask = async (req, res) => {
     })
 
     try {
-        await task.save()
-        res.status(201).send(task)
+        await task.save();
+        res.status(201).send(task);
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e);
     }
 }
-
 const getTasks = async (req, res) => {
     // GET /tasks?completed=true
     // GET /tasks?limit=10&skip=20
     // GET /tasks?sortBy=createdAt:desc
-    const match = {}
-    const sort = {}
+    const match = {};
+    const sort = {};
 
     if (req.query.completed) {
-        match.completed = req.query.completed === 'true'
+        match.completed = req.query.completed === 'true';
     }
 
     if (req.query.sortBy) {
-        const parts = req.query.sortBy.split(':')
-        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+        const parts = req.query.sortBy.split(':');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
     }
 
     try {
@@ -42,13 +41,12 @@ const getTasks = async (req, res) => {
                 skip: parseInt(req.query.skip),
                 sort
             }
-        }).execPopulate()
-        res.send(req.user.tasks)
+        }).execPopulate();
+        res.send(req.user.tasks);
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send();
     }
 }
-
 const getUserTasks = async (req, res) => {
     const _id = req.params.id
 
@@ -64,7 +62,6 @@ const getUserTasks = async (req, res) => {
         res.status(500).send()
     }
 }
-
 const updateUserTasks =  async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'completed']
@@ -78,35 +75,35 @@ const updateUserTasks =  async (req, res) => {
         const task = await Task.findOne({ _id: req.params.id, owner: req.user._id})
 
         if (!task) {
-            return res.status(404).send()
+            return res.status(404).send();
         }
 
-        updates.forEach((update) => task[update] = req.body[update])
-        await task.save()
-        res.send(task)
+        updates.forEach((update) => task[update] = req.body[update]);
+        await task.save();
+        res.send(task);
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e);
     }
 }
-
-const deleteUser =  async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
 
         if (!task) {
-            res.status(404).send()
+            res.status(404).send();
         }
 
-        res.send(task)
+        res.send(task);
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send();
     }
 }
+
+
 
 router.post('/tasks', auth, addingTask);
 router.get('/tasks', getTasks);
 router.get('/tasks/:id', auth, getUserTasks);
 router.patch('/tasks/:id', auth, updateUserTasks);
 router.delete('/tasks/:id', auth, deleteUser);
-
-module.exports = router
+module.exports = router;
